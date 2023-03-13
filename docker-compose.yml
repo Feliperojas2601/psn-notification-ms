@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  psn-chat-ms:
+  psn-notifications-ms:
     image: psn-notification-ms
     env_file:
       - .env
