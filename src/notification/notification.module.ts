@@ -21,7 +21,7 @@ import { Notification, NotificationSchema } from './entity/notification.entity';
   controllers: [NotificationController],
   providers: [
     NotificationService,
-    NotificationSocketGateway,
+    //NotificationSocketGateway,
     {
       provide: 'NOTIFICATION_RMQ_SERVICE',
       useFactory: (configurationService: ConfigurationService) => {

@@ -13,11 +13,14 @@ async function bootstrap() {
   const host = configurationService.get('RABBITMQ_HOST');
   const queueName = configurationService.get('RABBITMQ_QUEUE_NAME');
 
+  const port = configurationService.get('PORT');
+
   await app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
       urls: [`amqp://${user}:${password}@${host}`],
       queue: queueName,
+      noAck: false,
       queueOptions: {
         durable: true,
       },
@@ -25,6 +28,6 @@ async function bootstrap() {
   });
 
   app.startAllMicroservices();
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();

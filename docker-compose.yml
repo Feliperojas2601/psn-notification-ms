@@ -1,12 +1,6 @@
 version: '3.7'
 
 services:
-  psn-notifications-ms:
-    image: psn-notification-ms
-    env_file:
-      - .env
-    ports:
-      - "3000:3000"
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -18,3 +12,19 @@ services:
       - "15672:15672"
     env_file:
       - .env
+  psn-notification-ms:
+    image: psn-notification-ms
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - rabbitmq
+  psn-notification-ws-ms:
+    image: psn-notification-ws-ms
+    env_file:
+      - .env
+    ports:
+      - "3001:3001"
+    depends_on: 
+      - rabbitmq

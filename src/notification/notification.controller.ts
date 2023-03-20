@@ -1,13 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Param,
-  Post,
-  Query,
-} from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { CreateNotificationDto } from './DTO/createNotification.dto';
 import { NotificationService } from './notification.service';
 
@@ -20,29 +12,42 @@ export class NotificationController {
   ) {}
 
   @Post()
-  createNotification(@Body() createNotificationDto: CreateNotificationDto) {
-    const notification = this.notificationService.createNotification(
+  async createNotification(
+    @Body() createNotificationDto: CreateNotificationDto,
+  ) {
+    const notification = await this.notificationService.createNotification(
       createNotificationDto,
     );
-    this.notificationRMQService.send(
-      {
-        cmd: 'create-notification',
-      },
-      notification,
-    );
-    return notification;
-  }
 
-  @Get('/user/:userId')
-  findOne(
-    @Param('userId') userId: number,
-    @Query('limit') limit: number,
-    @Query('offset') offset: number,
-  ) {
-    const paginationDto = { limit, offset };
-    return this.notificationService.getNotificationsByUser(
-      userId,
-      paginationDto,
-    );
+    const {
+      actorId,
+      notifierId,
+      type,
+      title,
+      content,
+      createDate,
+      updateDate,
+    } = notification;
+
+    const createNotificationWsDto = {
+      actorId,
+      notifierId,
+      type,
+      title,
+      content,
+      createDate,
+      updateDate,
+    };
+
+    try {
+      const response = await this.notificationRMQService.emit(
+        'CREATE_NOTIFICATION',
+        createNotificationWsDto,
+      );
+      console.log('Response from receiver micro:', response);
+    } catch (error) {
+      throw new RpcException(error);
+    }
+    return notification;
   }
 }
