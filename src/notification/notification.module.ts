@@ -4,7 +4,6 @@ import { ConfigurationModule } from 'src/configuration/configuration.module';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 
 import { NotificationService } from './notification.service';
-import { NotificationSocketGateway } from './notification.gateway';
 import { ConfigurationService } from 'src/configuration/configuration.service';
 
 import { NotificationController } from './notification.controller';
@@ -21,7 +20,6 @@ import { Notification, NotificationSchema } from './entity/notification.entity';
   controllers: [NotificationController],
   providers: [
     NotificationService,
-    //NotificationSocketGateway,
     {
       provide: 'NOTIFICATION_RMQ_SERVICE',
       useFactory: (configurationService: ConfigurationService) => {

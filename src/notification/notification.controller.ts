@@ -40,11 +40,10 @@ export class NotificationController {
     };
 
     try {
-      const response = await this.notificationRMQService.emit(
+      await this.notificationRMQService.emit(
         'CREATE_NOTIFICATION',
         createNotificationWsDto,
       );
-      console.log('Response from receiver micro:', response);
     } catch (error) {
       throw new RpcException(error);
     }
