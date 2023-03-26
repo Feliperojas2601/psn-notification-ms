@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { CreateNotificationDto } from './DTO/createNotification.dto';
 import { NotificationService } from './notification.service';
@@ -48,5 +48,18 @@ export class NotificationController {
       throw new RpcException(error);
     }
     return notification;
+  }
+
+  @Get('/user/:userId')
+  async getNotificationsByUser(
+    @Param('userId') userId: number,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    const paginationDto = { limit, offset };
+    return await this.notificationService.getNotificationsByUser(
+      userId,
+      paginationDto,
+    );
   }
 }
