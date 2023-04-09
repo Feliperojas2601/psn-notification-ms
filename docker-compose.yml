@@ -6,6 +6,9 @@ services:
     hostname: rabbitmq
     volumes:
       - /var/lib/rabbitmq
+    expose:
+      - "15672"
+      - "5672"
     ports:
       - "4402:5672"
       - "4403:15672"
@@ -17,6 +20,7 @@ services:
   psn-notification-ms:
     image: psn-notification-ms
     build: .
+    container_name: psn-notification-ms
     env_file:
       - .env
     ports:
@@ -29,6 +33,7 @@ services:
   psn-notification-ws-ms:
     image: psn-notification-ws-ms
     build: ../psn-notification-ws-ms
+    container_name: psn-notification-ws-ms
     env_file:
       - ../psn-notification-ws-ms/.env
     ports:
