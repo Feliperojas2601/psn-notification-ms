@@ -11,6 +11,8 @@ services:
       - "4403:15672"
     env_file:
       - .env
+    networks:
+      - psn_network
 
   psn-notification-ms:
     image: psn-notification-ms
@@ -21,13 +23,21 @@ services:
       - "4400:4400"
     depends_on: 
       - rabbitmq
+    networks:
+      - psn_network
 
   psn-notification-ws-ms:
     image: psn-notification-ws-ms
     build: ../psn-notification-ws-ms
     env_file:
-      - .env
+      - ../psn-notification-ws-ms/.env
     ports:
       - "4401:4401"
     depends_on: 
       - rabbitmq
+    networks:
+      - psn_network
+
+networks:
+  psn_network:
+    external: true
