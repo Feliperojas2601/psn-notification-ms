@@ -1,5 +1,4 @@
 version: '3.7'
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -8,23 +7,27 @@ services:
     volumes:
       - /var/lib/rabbitmq
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "4402:5672"
+      - "4403:15672"
     env_file:
       - .env
+
   psn-notification-ms:
     image: psn-notification-ms
+    build: .
     env_file:
       - .env
     ports:
-      - "3003:3003"
+      - "4400:4400"
     depends_on: 
       - rabbitmq
+
   psn-notification-ws-ms:
     image: psn-notification-ws-ms
+    build: ../psn-notification-ws-ms
     env_file:
       - .env
     ports:
-      - "3001:3001"
+      - "4401:4401"
     depends_on: 
       - rabbitmq
