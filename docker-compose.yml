@@ -19,7 +19,7 @@ services:
     build: .
     container_name: psn-notification-ms-service
     env_file:
-      - ./.env
+      - .env
     ports:
       - "4400:4400"
     depends_on: 
