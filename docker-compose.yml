@@ -29,10 +29,10 @@ services:
     
   psn-notification-ws-ms-service:
     image: psn-notification-ws-ms-service
-    build: ../psn-notification-ws-ms
+    build: ../psn_notification_ws_ms
     container_name: psn-notification-ws-ms-service
     env_file:
-      - ../psn-notification-ws-ms/.env
+      - ../psn_notification_ws_ms/.env
     ports:
       - "4401:4401"
     depends_on: 
