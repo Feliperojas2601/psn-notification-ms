@@ -52,6 +52,7 @@ export class NotificationService {
         .find({
           notifierId: userId,
         })
+        .sort({ createDate: -1 })
         .skip(offset)
         .limit(limit);
       return notifications;
